@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -64,10 +65,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $category = Category::where('user_id', \Auth::id())->first();
+        if (!$category) {
+            $category = new Category();
+            $category->name = "uncategorized";
+            $category->user_id = \Auth::id();
+            $category->save();
+        }
+
+        return $user;
     }
 }

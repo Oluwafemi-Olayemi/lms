@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('desc');
             $table->string('cost');
-            $table->unsignedSmallInteger('category')->nullable();
+            $table->unsignedInteger('quantity');
+            $table->json('img')->nullable();
+
             $table->unsignedBigInteger('cat_id');
 
             $table->foreign('cat_id')

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Input\Input;
 
 class ProductController extends Controller
 {
@@ -39,8 +42,28 @@ class ProductController extends Controller
             'cost' => 'required',
             'category' => 'required',
             'quantity' => 'required',
-            'file' => 'required',
+            'prod_imgs' => 'required',
         ]);
+$path=[];
+        if ($request->file('prod_imgs')){
+            foreach($request->file('prod_imgs') as $key => $file)
+            {
+                $p = Storage::putFile('uploads/products', $file);
+                array_push($path, $p);
+            }
+        }
+
+
+
+
+        $product = new Product();
+        $product->name = $request->input('name');
+        $product->desc = $request->input('description');
+        $product->cost = $request->input('cost');
+        $product->cat_id = $request->input('category');
+        $product->quantity = $request->input('quantity');
+        $product->img = json_encode($path);
+        $product->save();
 
         return redirect()->route('cat_and_prod','#product')
             ->with('status', '"'.request()->input('name').'"'.' product created successfully');

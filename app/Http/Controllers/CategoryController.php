@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         //@todo paginate data
-
         return view('cat_and_prod');
-
     }
-    public function createCategory(){
+
+    public function createCategory()
+    {
         request()->validate(
             [
                 'name' => 'required|max:50|unique:categories'
@@ -26,7 +27,7 @@ class CategoryController extends Controller
         $category->user_id = \Auth::id();
         $category->save();
 
-        return back()->with('status', '"'.request()->input('name').'"'.' category created successfully');
+        return back()->with('status', '"' . request()->input('name') . '"' . ' category created successfully');
 
     }
 }

@@ -49,7 +49,7 @@
                           <i class="fa fa-lg fa-fw fa-trash"></i>
                       </button>';
 
-        $categories = \App\Models\Category::select('name')->get();
+        $categories = \App\Models\Category::where('name', '!=', 'uncategorized')->select(['id','name'])->get();
 
         $data=[];
             foreach ($categories as $key=>$item) {
@@ -92,7 +92,7 @@
         </div>
     </div>
 
-    <form action="/products" method="post">
+    <form action="/products" method="post" enctype="multipart/form-data">
         @csrf
         <fieldset class="border p-2" id="product">
             <legend class="float-none w-auto p-2 mb-0">Product</legend>
@@ -106,10 +106,11 @@
             <div class="row  mb-3">
                 <x-adminlte-input name="cost" label="Product cost" placeholder="product cost"
                                   fgroup-class="col-md-6 mb-0"/>
-                <x-adminlte-select-bs name="selBsBasic" label="Category" fgroup-class="col-md-6 mb-0">
+                <x-adminlte-select-bs name="category" label="Category" fgroup-class="col-md-6 mb-0">
                     @php
                     foreach($categories as $category){
-                        echo('<option>'.$category->name.'</option>');
+
+                        echo('<option value="'.$category->id.'">'.$category->name.'</option>');
                     }
                     @endphp
                 </x-adminlte-select-bs>
@@ -119,9 +120,9 @@
                 <x-adminlte-input name="quantity" label="Product quantity" placeholder="product quantity"
                                   fgroup-class="col-md-6 mb-0"/>
 
-                <x-adminlte-input-file id="ifMultiple" name="ifMultiple[]" label="Upload Product images"
+                <x-adminlte-input-file id="prod_imgs" name="prod_imgs[]" label="Upload Product images"
                                        fgroup-class="col-md-6 mb-0"
-                                       placeholder="Choose multiple files..." igroup-size="lg" legend="Choose" multiple>
+                                       placeholder="Choose multiple files..." igroup-size="md" legend="Choose" multiple>
 
                     <x-slot name="prependSlot">
                         <div class="input-group-text text-primary">
