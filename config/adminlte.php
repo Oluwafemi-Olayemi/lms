@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'LMS',
     'title_prefix' => '',
     'title_postfix' => '',
 

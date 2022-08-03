@@ -139,7 +139,61 @@
         </fieldset>
     </form>
 
+    @php
+        $prod_heads = [
+                'ID',
+                'Name',
+                ['label' => 'Actions', 'no-export' => true, 'width' => 5],
+                ];
+$btnEdit = '<button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
+                <i class="fa fa-lg fa-fw fa-pen"></i>
+            </button>';
+$btnDelete = '<button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
+                  <i class="fa fa-lg fa-fw fa-trash"></i>
+              </button>';
 
+
+
+$products = \App\Models\Product::with("category")->where('id', \Auth::id())->get();
+
+$data=[];
+    foreach ($products as $key=>$item) {
+         array_push($data, [$key+1,$item->name,'<nobr>'.$btnEdit.$btnDelete.'</nobr>']);
+    }
+
+
+    $config2 = [
+    'data' => $data,
+    'order' => [[1, 'asc']],
+    'columns' => [null, null, ['orderable' => false]],
+];
+    @endphp
+    <div class="accordion" id="accordionExample2">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        View/Edit/Delete Product List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample2">
+                <div class="card-body">
+                    <x-adminlte-datatable id="table2" :heads="$prod_heads"  hoverable>
+                        @foreach($config2['data'] as $row)
+                            <tr>
+                                @foreach($row as $cell)
+                                    <td>{!! $cell !!}</td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </x-adminlte-datatable>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 @stop
 
