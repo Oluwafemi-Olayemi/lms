@@ -254,11 +254,11 @@ return [
             'url'  => '/sidemenu/user/profile',
             'icon' => 'fas fa-fw fa-user',
         ],
-        [
+       /* [
             'text' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
-        ],
+        ],*/
         [
             'text' => 'CATEGORY & PRODUCT',
             'url' => '/cat_and_prod',
@@ -274,8 +274,9 @@ return [
         ],*/
 
         [
-            'text'    => 'MARKETER',
+            'text'    => 'MARKETERS',
             'icon'    => 'fas fa-fw fa-share',
+            'url'     => '/marketers',
             'submenu' => [
                 [
                     'text' => 'level_one',

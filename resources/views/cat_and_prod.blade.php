@@ -67,13 +67,13 @@
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 View/Delete Category List
                             </button>
                         </h2>
                     </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
                             <x-adminlte-datatable id="table1" :heads="$cat_heads"  hoverable>
                                 @foreach($config['data'] as $row)
@@ -143,6 +143,8 @@
         $prod_heads = [
                 'ID',
                 'Name',
+                'Cost',
+                'Quantity',
                 ['label' => 'Actions', 'no-export' => true, 'width' => 5],
                 ];
 $btnEdit = '<button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
@@ -151,16 +153,18 @@ $btnEdit = '<button class="btn btn-xs btn-default text-primary mx-1 shadow" titl
 $btnDelete = '<button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
                   <i class="fa fa-lg fa-fw fa-trash"></i>
               </button>';
+$btnView = '<button class="btn btn-xs btn-default text-primary mx-1 shadow" title="View">
+                  <i class="fa fa-lg fa-fw fa-eye"></i>
+              </button>';
 
 
 
-$products = \App\Models\Product::with("category")->where('id', \Auth::id())->get();
+$products = \App\Models\Product::with("category")->where('id', \Auth::id())->select(['name','cost','quantity'])->get();
 
 $data=[];
     foreach ($products as $key=>$item) {
-         array_push($data, [$key+1,$item->name,'<nobr>'.$btnEdit.$btnDelete.'</nobr>']);
+         array_push($data, [$key+1,$item->name,$item->quantity,$item->cost,'<nobr>'.$btnEdit.$btnDelete.$btnView.'</nobr>']);
     }
-
 
     $config2 = [
     'data' => $data,
@@ -172,13 +176,13 @@ $data=[];
         <div class="card">
             <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         View/Edit/Delete Product List
                     </button>
                 </h2>
             </div>
 
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample2">
+            <div id="collapseTwo" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample2">
                 <div class="card-body">
                     <x-adminlte-datatable id="table2" :heads="$prod_heads"  hoverable>
                         @foreach($config2['data'] as $row)
